@@ -8,6 +8,7 @@ import com.example.catfacts.CatFactsService
 import com.example.catfacts.CatImageService
 import com.example.catfacts.RetrofitCatFactClient
 import com.example.catfacts.RetrofitCatImageClient
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -18,8 +19,11 @@ class MainViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            val newFacts = getFacts(factsCount)
-            val newImages = getCatImages(factsCount)
+            val factsDeferred = async { getFacts(factsCount) }
+            val imagesDeferred = async { getCatImages(factsCount) }
+
+            val newFacts = factsDeferred.await()
+            val newImages = imagesDeferred.await()
 
             val combinedFacts = newFacts.mapIndexed { index, fact ->
                 CatCard(id = index, text = fact.text, imageUrl = newImages.getOrNull(index).toString(), mutableStateOf(false))

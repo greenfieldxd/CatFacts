@@ -1,7 +1,6 @@
 package com.example.catfacts
 
 import android.os.Bundle
-import android.view.RoundedCorner
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -9,7 +8,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,14 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -50,14 +44,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.catfacts.ui.theme.CatFactsTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import coil.size.Scale
 import coil.size.Size
+import com.example.catfacts.ui.theme.CatFactsTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,13 +68,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp(modifier: Modifier = Modifier) {
+fun MyApp(modifier: Modifier = Modifier, mainViewModel: MainViewModel = viewModel()) {
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
 
     Surface(modifier, color = MaterialTheme.colorScheme.background) {
         if (shouldShowOnboarding)
             OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
-        else CardsList()
+        else CardsList(mainViewModel = mainViewModel)
     }
 }
 
@@ -104,7 +96,7 @@ fun OnboardingScreen(onContinueClicked: () -> Unit, modifier: Modifier = Modifie
 }
 
 @Composable
-fun CardsList(modifier: Modifier = Modifier, mainViewModel: MainViewModel = viewModel()) {
+fun CardsList(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
 
     val factsList = mainViewModel.facts
 
@@ -176,6 +168,7 @@ fun CardContent(
                         .size(Size(128, 128))
                         .scale(Scale.FILL)
                         .placeholder(R.drawable.picture)
+                        .error(R.drawable.error)
                         .build(),
                     contentDescription = null,
                     modifier = Modifier
