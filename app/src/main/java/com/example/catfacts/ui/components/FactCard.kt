@@ -4,21 +4,13 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -26,21 +18,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.catfacts.R
+import com.example.catfacts.ui.theme.CatFactsTheme
 
 @Composable
-fun FactCard(name: String, text: String, expanded: Boolean, imageUrl: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun FactCard(
+    name: String,
+    text: String,
+    expanded: Boolean,
+    imageUrl: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val cardColor by animateColorAsState(
         targetValue = if (expanded) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary,
         label = "cardColor"
     )
     val contentColor = MaterialTheme.colorScheme.onPrimary;
-
     Card(
         colors = CardDefaults.cardColors(containerColor = cardColor, contentColor = contentColor),
-        modifier = modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+        shape = RoundedCornerShape(40.dp),
+        modifier = modifier.padding(vertical = 8.dp, horizontal = 16.dp)
     ) {
         CardContent(
             name = name,
@@ -65,7 +66,7 @@ fun CardContent(
     Column(
         modifier
             .fillMaxWidth()
-            .padding(12.dp)
+            .padding(8.dp)
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
@@ -77,7 +78,8 @@ fun CardContent(
             Row(
                 modifier = modifier
                     .weight(1f)
-                    .padding(12.dp),
+                    .padding(5.dp)
+                    .clip(CircleShape),
                 verticalAlignment = Alignment.Bottom
             ) {
                 LoadableImage(
@@ -85,11 +87,15 @@ fun CardContent(
                     modifier = Modifier
                         .size(128.dp)
                         .padding(8.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(CircleShape)
                 )
-                Text(text = "Fact $name", modifier.padding(8.dp), fontSize = 36.sp, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold))
+                Text(
+                    text = "Fact $name",
+                    modifier = modifier.padding(8.dp),
+                    fontSize = 26.sp,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
+                )
             }
-
             IconButton(
                 onClick = onClick
             ) {
@@ -99,7 +105,26 @@ fun CardContent(
                 Icon(imageVector = icon, contentDescription = contentDescription)
             }
         }
+        if (expanded) {
+            Text(
+                modifier = modifier.padding(20.dp),
+                text = text,
+                fontSize = 20.sp
+            )
+        }
+    }
+}
 
-        if (expanded) Text(modifier = modifier.padding(12.dp), text = text, fontSize = 24.sp)
+@Preview(showBackground = true, widthDp = 500, heightDp = 400)
+@Composable
+private fun FactCardPreview() {
+    CatFactsTheme {
+        FactCard(
+            name = "Name",
+            text = "Some text",
+            expanded = true,
+            imageUrl = "",
+            onClick = { }
+        )
     }
 }

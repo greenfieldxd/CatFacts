@@ -2,8 +2,9 @@ package com.example.catfacts.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,7 +36,7 @@ fun LoadableImage(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
+            .clip(CircleShape)
             .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f))
     ) {
         Image(

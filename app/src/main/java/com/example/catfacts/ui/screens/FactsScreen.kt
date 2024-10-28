@@ -18,7 +18,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
-fun FactsListScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
+fun FactsScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
 
     val isLoading by remember { mainViewModel.isLoading }
     val isRefreshing by remember { mainViewModel.isRefreshing }
