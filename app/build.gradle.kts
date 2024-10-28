@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.pluginSerialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -42,6 +43,10 @@ android {
 
 dependencies {
 
+    implementation(libs.accompanist.swiperefresh)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.coil.compose)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)

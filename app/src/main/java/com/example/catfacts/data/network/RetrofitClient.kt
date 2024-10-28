@@ -1,7 +1,5 @@
 package com.example.catfacts.data.network
 
-import com.example.catfacts.data.model.CatFact
-import com.example.catfacts.data.model.CatImage
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -31,12 +29,12 @@ object RetrofitCatImageClient {
 
 interface CatFactsService {
     @GET("facts/random")
-    suspend fun getRandomFacts(@Query("amount") count: Int): List<CatFact>
+    suspend fun getRandomFacts(@Query("amount") count: Int): List<CatFactApi>
 }
 
 interface CatImageService {
     @GET("v1/images/search")
-    suspend fun getCatImages(@Query("limit") count: Int = 10, @Query("size") size: String = "thumb"): List<CatImage>
+    suspend fun getCatImages(@Query("limit") count: Int = 10, @Query("size") size: String = "thumb"): List<CatImageApi>
 }
 
 

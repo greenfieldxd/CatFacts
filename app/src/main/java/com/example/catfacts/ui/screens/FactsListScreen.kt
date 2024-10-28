@@ -14,36 +14,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.catfacts.ui.components.FactCard
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun FactsListScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel) {
 
     val isLoading by remember { mainViewModel.isLoading }
+    val isRefreshing by remember { mainViewModel.isRefreshing }
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
 
-    if (isLoading){
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.onPrimary,
-                strokeWidth = 4.dp,
-                modifier = Modifier.align(Alignment.Center))
+    SwipeRefresh(state = swipeRefreshState, onRefresh = { mainViewModel.refreshFacts() }) {
+        if (isLoading){
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    strokeWidth = 4.dp,
+                    modifier = Modifier.align(Alignment.Center))
+            }
         }
-    }
-    else {
-        val factsList = mainViewModel.facts
+        else {
+            val factsList = mainViewModel.facts
 
-        LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-            items(items = factsList){ fact ->
-                FactCard(name = "${fact.id + 1}",
-                    text = fact.text,
-                    imageUrl = fact.imageUrl,
-                    expanded = fact.expanded.value,
-                    onClick = { mainViewModel.expandFact(fact.id) },
-                    modifier = modifier)
+            LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
+                items(items = factsList){ fact ->
+                    FactCard(name = "${fact.id + 1}",
+                        text = fact.text,
+                        imageUrl = fact.imageUrl,
+                        expanded = fact.expanded.value,
+                        onClick = { mainViewModel.expandFact(fact.id) },
+                        modifier = modifier)
+                }
             }
         }
     }
