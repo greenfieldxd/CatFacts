@@ -1,4 +1,4 @@
-package com.example.catfacts
+package com.example.catfacts.data.model
 
 import androidx.compose.runtime.MutableState
 

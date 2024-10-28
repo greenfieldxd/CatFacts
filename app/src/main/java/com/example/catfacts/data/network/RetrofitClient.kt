@@ -1,7 +1,7 @@
-@file:Suppress("JSON_FORMAT_REDUNDANT")
+package com.example.catfacts.data.network
 
-package com.example.catfacts
-
+import com.example.catfacts.data.model.CatFact
+import com.example.catfacts.data.model.CatImage
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

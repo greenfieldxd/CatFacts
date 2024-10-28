@@ -2,20 +2,23 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catfacts.CatCard
-import com.example.catfacts.CatFact
-import com.example.catfacts.CatFactsService
-import com.example.catfacts.CatImageService
-import com.example.catfacts.RetrofitCatFactClient
-import com.example.catfacts.RetrofitCatImageClient
+import com.example.catfacts.data.model.CatCard
+import com.example.catfacts.data.model.CatFact
+import com.example.catfacts.data.network.CatFactsService
+import com.example.catfacts.data.network.CatImageService
+import com.example.catfacts.data.network.RetrofitCatFactClient
+import com.example.catfacts.data.network.RetrofitCatImageClient
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
     private val factsCount:Int = 10
+
     private val _facts = mutableStateListOf<CatCard>()
     val facts: List<CatCard> get() = _facts
+
+    var isLoading = mutableStateOf(true)
 
     init {
         viewModelScope.launch {
@@ -31,6 +34,7 @@ class MainViewModel : ViewModel() {
 
             _facts.clear()
             _facts.addAll(combinedFacts)
+            isLoading.value = false
         }
     }
 
