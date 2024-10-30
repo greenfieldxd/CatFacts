@@ -1,5 +1,7 @@
 package com.example.catfacts.data.storage
 
+import kotlinx.coroutines.flow.Flow
+
 class CatFactRepository(private val catFactDao: CatFactDao) {
     suspend fun insertCatFact(catFact: CatFactEntity){
         catFactDao.insertCatFact(catFact)
@@ -9,7 +11,7 @@ class CatFactRepository(private val catFactDao: CatFactDao) {
         catFactDao.clearAllFacts()
     }
 
-    suspend fun getAllFacts(): List<CatFactEntity>{
+    fun getAllFacts(): Flow<List<CatFactEntity>>{
         return catFactDao.getAllCatFacts()
     }
 }

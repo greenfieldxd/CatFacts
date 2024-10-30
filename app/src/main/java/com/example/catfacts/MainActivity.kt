@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.catfacts.ui.screens.FactsScreen
 import com.example.catfacts.ui.screens.WelcomeScreen
 import com.example.catfacts.ui.theme.CatFactsTheme
+import com.example.catfacts.viewmodel.MainViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

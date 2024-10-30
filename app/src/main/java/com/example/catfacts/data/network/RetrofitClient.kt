@@ -7,24 +7,29 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-object RetrofitCatFactClient {
-    private const val BASE_URL = "https://cat-fact.herokuapp.com/"
-    val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(
-            Json { ignoreUnknownKeys = true }
-                .asConverterFactory("application/json".toMediaType()))
-        .build()
-}
+class RetrofitClient {
+    private fun createRetrofit(baseUrl: String): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(
+                Json { ignoreUnknownKeys = true }
+                    .asConverterFactory("application/json".toMediaType())
+            )
+            .build()
+    }
 
-object RetrofitCatImageClient {
-    private const val BASE_URL = "https://api.thecatapi.com/"
-    val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(
-            Json { ignoreUnknownKeys = true }
-                .asConverterFactory("application/json".toMediaType()))
-        .build()
+    val catFactService: CatFactsService by lazy {
+        createRetrofit(CAT_FACT_BASE_URL).create(CatFactsService::class.java)
+    }
+
+    val catImageService: CatImageService by lazy {
+        createRetrofit(CAT_IMAGE_BASE_URL).create(CatImageService::class.java)
+    }
+
+    companion object{
+        private const val CAT_FACT_BASE_URL = "https://cat-fact.herokuapp.com/"
+        private const val CAT_IMAGE_BASE_URL = "https://api.thecatapi.com/"
+    }
 }
 
 interface CatFactsService {
@@ -36,7 +41,3 @@ interface CatImageService {
     @GET("v1/images/search")
     suspend fun getCatImages(@Query("limit") count: Int = 10, @Query("size") size: String = "thumb"): List<CatImageApi>
 }
-
-
-
-

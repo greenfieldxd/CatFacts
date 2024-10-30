@@ -13,6 +13,8 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,13 +30,12 @@ import com.example.catfacts.ui.theme.CatFactsTheme
 fun FactCard(
     name: String,
     text: String,
-    expanded: Boolean,
     imageUrl: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var expanded = rememberSaveable { mutableStateOf(false) }
     val cardColor by animateColorAsState(
-        targetValue = if (expanded) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary,
+        targetValue = if (expanded.value) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary,
         label = "cardColor"
     )
     val contentColor = MaterialTheme.colorScheme.onPrimary;
@@ -47,8 +48,8 @@ fun FactCard(
             name = name,
             text = text,
             imageUrl = imageUrl,
-            expanded = expanded,
-            onClick = onClick,
+            expanded = expanded.value,
+            onClick = { expanded.value = !expanded.value },
             modifier = modifier
         )
     }
@@ -122,9 +123,7 @@ private fun FactCardPreview() {
         FactCard(
             name = "Name",
             text = "Some text",
-            expanded = true,
             imageUrl = "",
-            onClick = { }
         )
     }
 }

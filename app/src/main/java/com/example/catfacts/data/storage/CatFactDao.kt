@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CatFactDao {
@@ -14,5 +15,5 @@ interface CatFactDao {
     suspend fun clearAllFacts()
 
     @Query("SELECT * FROM fact_table")
-    suspend fun getAllCatFacts(): List<CatFactEntity>
+    fun getAllCatFacts(): Flow<List<CatFactEntity>>
 }

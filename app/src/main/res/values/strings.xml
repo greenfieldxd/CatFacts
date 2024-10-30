@@ -3,4 +3,5 @@
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
     <string name="welcome_text">Welcome! Dive into the world of weird and wonderful cat facts. Discover the quirks of our feline friends and enjoy some entertaining tidbits that you never knew you needed. 🐱📚</string>
+    <string name="load_error">Sorry, there was an error loading the data.</string>
 </resources>
