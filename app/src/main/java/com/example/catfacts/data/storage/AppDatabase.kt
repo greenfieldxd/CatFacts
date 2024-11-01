@@ -1,28 +1,18 @@
 package com.example.catfacts.data.storage
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.catfacts.data.storage.dao.FactDao
+import com.example.catfacts.data.storage.dao.ImageDao
+import com.example.catfacts.data.storage.entities.FactEntity
+import com.example.catfacts.data.storage.entities.ImageEntity
 
-@Database(entities = [CatFactEntity::class], version = 1)
+@Database(entities = [FactEntity::class, ImageEntity::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun catFactDao(): CatFactDao
+    abstract fun catFactDao(): FactDao
+    abstract fun catImageDao(): ImageDao
 
     companion object{
-        @Volatile
-        private var INSTANCE : AppDatabase? = null
-
-        fun getDatabase(context: Context): AppDatabase{
-            return INSTANCE ?: synchronized(this){
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "cat_fact_database"
-                ).build()
-                INSTANCE = instance
-                instance
-            }
-        }
+        const val DATABASE_NAME = "cat_fact_database"
     }
 }
