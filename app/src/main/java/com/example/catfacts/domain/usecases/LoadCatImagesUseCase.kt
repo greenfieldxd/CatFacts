@@ -1,8 +1,7 @@
-package com.example.catfacts.domain.models.usecases
+package com.example.catfacts.domain.usecases
 
 import com.example.catfacts.data.repository.ImageRepository
-import com.example.catfacts.domain.models.entities.Fact
-import com.example.catfacts.domain.models.entities.Image
+import com.example.catfacts.domain.entities.Image
 import javax.inject.Inject
 
 interface LoadCatImagesUseCase {

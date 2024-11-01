@@ -1,7 +1,7 @@
-package com.example.catfacts.domain.models.usecases
+package com.example.catfacts.domain.usecases
 
 import com.example.catfacts.data.repository.FactRepository
-import com.example.catfacts.domain.models.entities.Fact
+import com.example.catfacts.domain.entities.Fact
 import javax.inject.Inject
 
 interface LoadCatFactsUseCase {

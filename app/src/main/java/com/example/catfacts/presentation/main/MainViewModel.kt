@@ -2,8 +2,8 @@ package com.example.catfacts.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catfacts.domain.models.usecases.GetCardsUseCase
-import com.example.catfacts.domain.models.usecases.RefreshCardsUseCase
+import com.example.catfacts.domain.usecases.GetCardsUseCase
+import com.example.catfacts.domain.usecases.RefreshCardsUseCase
 import com.example.catfacts.presentation.model.CatCard
 import com.example.catfacts.presentation.state.ProgressState
 import dagger.hilt.android.lifecycle.HiltViewModel

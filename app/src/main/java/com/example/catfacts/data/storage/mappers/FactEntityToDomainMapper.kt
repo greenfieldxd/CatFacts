@@ -1,7 +1,7 @@
 package com.example.catfacts.data.storage.mappers
 
 import com.example.catfacts.data.storage.entities.FactEntity
-import com.example.catfacts.domain.models.entities.Fact
+import com.example.catfacts.domain.entities.Fact
 import javax.inject.Inject
 
 class FactEntityToDomainMapper @Inject constructor() : (FactEntity) -> (Fact){

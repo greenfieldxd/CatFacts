@@ -1,11 +1,10 @@
 package com.example.catfacts.data.repository
 
-import android.util.Log
 import com.example.catfacts.data.network.mappers.ImageApiToEntityMapper
 import com.example.catfacts.data.network.services.CatImageService
 import com.example.catfacts.data.storage.dao.ImageDao
 import com.example.catfacts.data.storage.mappers.ImageEntityToDomainMapper
-import com.example.catfacts.domain.models.entities.Image
+import com.example.catfacts.domain.entities.Image
 import javax.inject.Inject
 
 interface ImageRepository {

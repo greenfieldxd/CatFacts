@@ -1,8 +1,8 @@
-package com.example.catfacts.domain.models.usecases
+package com.example.catfacts.domain.usecases
 
 import com.example.catfacts.data.repository.FactRepository
 import com.example.catfacts.data.repository.ImageRepository
-import com.example.catfacts.domain.models.entities.Image
+import com.example.catfacts.domain.entities.Image
 import com.example.catfacts.presentation.mappers.FactAndImageToCatCardMapper
 import com.example.catfacts.presentation.model.CatCard
 import javax.inject.Inject

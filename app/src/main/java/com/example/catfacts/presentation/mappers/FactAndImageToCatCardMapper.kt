@@ -1,7 +1,7 @@
 package com.example.catfacts.presentation.mappers
 
-import com.example.catfacts.domain.models.entities.Fact
-import com.example.catfacts.domain.models.entities.Image
+import com.example.catfacts.domain.entities.Fact
+import com.example.catfacts.domain.entities.Image
 import com.example.catfacts.presentation.model.CatCard
 import javax.inject.Inject
 

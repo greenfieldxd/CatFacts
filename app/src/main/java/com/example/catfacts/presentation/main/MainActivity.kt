@@ -4,11 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
@@ -58,7 +55,7 @@ fun MyApp(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltViewMode
         Box(modifier = Modifier.fillMaxSize()) {
             AnimatedVisibility(
                 visible = shouldShowOnboarding,
-                enter = slideInHorizontally(initialOffsetX =  { fullWidth -> fullWidth}, animationSpec = tween(durationMillis = tweenDuration)),
+                enter = slideInHorizontally(initialOffsetX =  { fullWidth -> - fullWidth}, animationSpec = tween(durationMillis = tweenDuration)),
                 exit = slideOutHorizontally(targetOffsetX =  { fullWidth -> - fullWidth}, animationSpec = tween(durationMillis = tweenDuration)),
             ) {
                 WelcomeScreen(onContinueClicked = {

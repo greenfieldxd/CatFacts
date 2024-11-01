@@ -5,7 +5,7 @@ import com.example.catfacts.data.network.mappers.FactApiToEntityMapper
 import com.example.catfacts.data.network.services.CatFactsService
 import com.example.catfacts.data.storage.dao.FactDao
 import com.example.catfacts.data.storage.mappers.FactEntityToDomainMapper
-import com.example.catfacts.domain.models.entities.Fact
+import com.example.catfacts.domain.entities.Fact
 import javax.inject.Inject
 
 interface FactRepository {

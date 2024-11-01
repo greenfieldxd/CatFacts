@@ -102,7 +102,7 @@ fun CardContent(
             ) {
                 val icon = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore
                 val contentDescription =
-                    if (expanded) stringResource(R.string.show_less) else stringResource(R.string.show_more)
+                    if (expanded) stringResource(R.string.show_less_text) else stringResource(R.string.show_more_text)
                 Icon(imageVector = icon, contentDescription = contentDescription)
             }
         }

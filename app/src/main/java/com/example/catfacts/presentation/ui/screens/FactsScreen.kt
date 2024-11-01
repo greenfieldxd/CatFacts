@@ -59,7 +59,7 @@ fun FactsScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(stringResource(R.string.load_error))
+                    Text(stringResource(R.string.load_error_text))
                     Button(
                         modifier = Modifier.padding(top = 10.dp),
                         onClick = { viewModel.refreshFacts() }
