@@ -1,6 +1,5 @@
 package com.example.catfacts.presentation.main
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catfacts.domain.models.usecases.GetCardsUseCase

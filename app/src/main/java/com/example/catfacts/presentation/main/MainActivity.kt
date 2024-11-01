@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -28,9 +32,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             CatFactsTheme {
                 Scaffold { innerPadding ->
-                    MyApp(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding))
+                    MyApp(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    )
                 }
             }
         }
@@ -40,10 +46,28 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltViewModel()) {
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
-
-    Surface(modifier, color = MaterialTheme.colorScheme.background) {
-        if (shouldShowOnboarding)
-            WelcomeScreen(onContinueClicked = { shouldShowOnboarding = false })
-        else FactsScreen(modifier = modifier, viewModel = viewModel)
+    Surface (modifier =
+        modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedVisibility(
+                visible = shouldShowOnboarding,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                WelcomeScreen(onContinueClicked = {
+                    shouldShowOnboarding = false
+                })
+            }
+            AnimatedVisibility (
+                visible = !shouldShowOnboarding,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                FactsScreen(
+                    modifier = modifier,
+                    viewModel = viewModel
+                )
+            }
+        }
     }
 }
