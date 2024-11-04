@@ -4,5 +4,5 @@ sealed class ProgressState {
     object Loading : ProgressState()
     object Success : ProgressState()
     object Refreshing : ProgressState()
-    object  Error : ProgressState()
+    object Error : ProgressState()
 }

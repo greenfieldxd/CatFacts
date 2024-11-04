@@ -24,7 +24,6 @@ object DatabaseModule {
             context,
             AppDatabase::class.java, DATABASE_NAME
          )
-             .allowMainThreadQueries()
              .fallbackToDestructiveMigration()
              .build()
 

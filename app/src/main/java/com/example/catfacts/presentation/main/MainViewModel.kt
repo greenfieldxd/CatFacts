@@ -20,7 +20,8 @@ class MainViewModel @Inject constructor(
     private val refreshCardsUseCase: RefreshCardsUseCase
 ) : ViewModel() {
 
-    private val _progressState: MutableStateFlow<ProgressState> = MutableStateFlow(ProgressState.Loading)
+    private val _progressState: MutableStateFlow<ProgressState> =
+        MutableStateFlow(ProgressState.Loading)
     val progressState: StateFlow<ProgressState> = _progressState.asStateFlow()
 
     private val _facts: MutableStateFlow<List<CatCard>> = MutableStateFlow(emptyList())
@@ -34,10 +35,11 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _progressState.value = ProgressState.Loading
             try {
-                _facts.value = getCardsUseCase.invoke()
-                _progressState.value = ProgressState.Success
-            }
-            catch (e: Exception){
+                getCardsUseCase.invoke().collect { catCards ->
+                    _facts.value = catCards
+                    _progressState.value = ProgressState.Success
+                }
+            } catch (e: Exception) {
                 _progressState.value = ProgressState.Error
             }
         }
@@ -45,15 +47,14 @@ class MainViewModel @Inject constructor(
 
     fun refreshFacts() {
         viewModelScope.launch {
-            supervisorScope {
-                _progressState.value = ProgressState.Refreshing
-                try {
-                    _facts.value = refreshCardsUseCase.invoke()
+            _progressState.value = ProgressState.Refreshing
+            try {
+                refreshCardsUseCase.invoke().collect { catCards ->
+                    _facts.value = catCards
                     _progressState.value = ProgressState.Success
                 }
-                catch (e: Exception){
-                    _progressState.value = ProgressState.Error
-                }
+            } catch (e: Exception) {
+                _progressState.value = ProgressState.Error
             }
         }
     }

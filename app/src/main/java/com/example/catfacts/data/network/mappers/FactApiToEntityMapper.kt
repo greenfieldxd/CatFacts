@@ -1,11 +1,11 @@
 package com.example.catfacts.data.network.mappers
 
-import com.example.catfacts.data.network.entities.CatFactApi
+import com.example.catfacts.data.network.entities.CatFact
 import com.example.catfacts.data.storage.entities.FactEntity
 import javax.inject.Inject
 
-class FactApiToEntityMapper @Inject constructor() : (CatFactApi) -> (FactEntity) {
-    override fun invoke(factApi: CatFactApi): FactEntity {
+class FactApiToEntityMapper @Inject constructor() : (CatFact) -> (FactEntity) {
+    override fun invoke(factApi: CatFact): FactEntity {
         return FactEntity(
             text = factApi.text
         )

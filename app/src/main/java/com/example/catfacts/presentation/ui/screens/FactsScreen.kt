@@ -1,6 +1,8 @@
 package com.example.catfacts.presentation.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -53,11 +55,12 @@ fun FactsScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             }
 
             is ProgressState.Error -> {
-                Box(
+                Column (
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
-                    contentAlignment = Alignment.Center
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(stringResource(R.string.load_error_text))
                     Button(

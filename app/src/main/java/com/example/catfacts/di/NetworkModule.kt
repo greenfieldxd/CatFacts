@@ -18,8 +18,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
     private const val CAT_FACT_BASE_URL = "https://cat-fact.herokuapp.com/"
     private const val CAT_IMAGE_BASE_URL = "https://api.thecatapi.com/"
+
+    private fun getDefaultJson() = Json { ignoreUnknownKeys = true }.asConverterFactory("application/json".toMediaType())
 
     @Provides
     @Singleton
@@ -31,24 +34,26 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Named("CatFact")
-    fun provideCatFactRetrofit(client: OkHttpClient): Retrofit {
+    fun provideRetrofit(client: OkHttpClient, baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .client(client)
-            .baseUrl(CAT_FACT_BASE_URL)
-            .addConverterFactory( Json { ignoreUnknownKeys = true }.asConverterFactory("application/json".toMediaType()))
+            .baseUrl(baseUrl)
+            .addConverterFactory(getDefaultJson())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("CatFact")
+    fun provideCatFactRetrofit(client: OkHttpClient): Retrofit {
+        return provideRetrofit(client, CAT_FACT_BASE_URL)
     }
 
     @Provides
     @Singleton
     @Named("CatImage")
     fun provideCatImageRetrofit(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .client(client)
-            .baseUrl(CAT_IMAGE_BASE_URL)
-            .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory("application/json".toMediaType()))
-            .build()
+        return provideRetrofit(client, CAT_IMAGE_BASE_URL)
     }
 
     @Provides

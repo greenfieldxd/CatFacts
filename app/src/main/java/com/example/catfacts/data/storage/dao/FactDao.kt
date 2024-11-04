@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.catfacts.data.storage.entities.FactEntity
 import com.example.catfacts.data.storage.entities.FactEntity.Companion.FACT_TABLE_NAME
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FactDao {
@@ -16,5 +17,5 @@ interface FactDao {
     suspend fun clearAllCatFacts()
 
     @Query("SELECT * FROM $FACT_TABLE_NAME")
-    fun getAllCatFacts(): List<FactEntity>
+    fun getAllCatFacts(): Flow<List<FactEntity>>
 }
