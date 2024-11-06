@@ -2,14 +2,16 @@ package com.example.catfacts.di
 
 import com.example.catfacts.data.repository.FactRepository
 import com.example.catfacts.data.repository.ImageRepository
+import com.example.catfacts.domain.usecases.ClearCardsUseCase
+import com.example.catfacts.domain.usecases.ClearCardsUseCaseImpl
 import com.example.catfacts.domain.usecases.GetCardsUseCase
 import com.example.catfacts.domain.usecases.GetCardsUseCaseImpl
 import com.example.catfacts.domain.usecases.LoadCatFactsUseCase
 import com.example.catfacts.domain.usecases.LoadCatFactsUseCaseImpl
 import com.example.catfacts.domain.usecases.LoadCatImagesUseCase
 import com.example.catfacts.domain.usecases.LoadCatImagesUseCaseImpl
-import com.example.catfacts.domain.usecases.RefreshCardsUseCase
-import com.example.catfacts.domain.usecases.RefreshCardsUseCaseImpl
+import com.example.catfacts.domain.usecases.LoadNewCardsUseCase
+import com.example.catfacts.domain.usecases.LoadNewCardsUseCaseImpl
 import com.example.catfacts.presentation.mappers.FactAndImageToCatCardMapper
 import dagger.Module
 import dagger.Provides
@@ -46,9 +48,17 @@ object DomainModule {
     @Singleton
     fun provideRefreshCardsUseCase(
         factRepository: FactRepository,
-        imageRepository: ImageRepository,
-        factAndImageToCatCardMapper : FactAndImageToCatCardMapper
-    ) : RefreshCardsUseCase {
-        return RefreshCardsUseCaseImpl(factRepository, imageRepository, factAndImageToCatCardMapper)
+        imageRepository: ImageRepository
+    ) : LoadNewCardsUseCase {
+        return LoadNewCardsUseCaseImpl(factRepository, imageRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideClearCardsUseCase(
+        factRepository: FactRepository,
+        imageRepository: ImageRepository
+    ) : ClearCardsUseCase {
+        return ClearCardsUseCaseImpl(factRepository, imageRepository)
     }
 }

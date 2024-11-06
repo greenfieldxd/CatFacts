@@ -11,7 +11,8 @@ import javax.inject.Inject
 
 interface ImageRepository {
     fun getCatImages(): Flow<List<Image>>
-    suspend fun loadNewCatImages() : Flow<List<Image>>
+    suspend fun loadNewCatImages(count: Int = 5)
+    suspend fun clearAllCatImages()
 }
 
 class CatImageRepositoryImpl @Inject constructor(
@@ -26,14 +27,13 @@ class CatImageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun loadNewCatImages() : Flow<List<Image>> {
-        catImageDao.clearAllCatImages()
-        val images = catImageService.getCatImages()
-        val entities = images.map { catImageApiToEntityMapper.invoke(it) }
-        entities.forEach { catImageDao.insertCatImage(it) }
+    override suspend fun loadNewCatImages(count: Int) {
+        catImageService.getCatImages(count)
+            .map { catImageApiToEntityMapper.invoke(it) }
+            .forEach { catImageDao.insertCatImage(it) }
+    }
 
-        return catImageDao.getAllCatImages().map { entities ->
-            entities.map { catImageEntityToDomainMapper.invoke(it) }
-        }
+    override suspend fun clearAllCatImages() {
+        catImageDao.clearAllCatImages()
     }
 }

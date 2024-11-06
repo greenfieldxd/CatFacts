@@ -1,5 +1,6 @@
 package com.example.catfacts.data.repository
 
+import com.example.catfacts.data.network.entities.CatFact
 import com.example.catfacts.data.network.mappers.FactApiToEntityMapper
 import com.example.catfacts.data.network.services.CatFactsService
 import com.example.catfacts.data.storage.dao.FactDao
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 interface FactRepository {
     fun getCatFacts(): Flow<List<Fact>>
-    suspend fun loadNewCatFacts(): Flow<List<Fact>>
+    suspend fun loadNewCatFacts(count: Int = 5)
+    suspend fun clearAllCatFact()
 }
 
 class CatFactRepositoryImpl @Inject constructor(
@@ -26,15 +28,14 @@ class CatFactRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun loadNewCatFacts(): Flow<List<Fact>> {
-        factDao.clearAllCatFacts()
-        val facts = catFactsService.getRandomFacts()
-        val entities = facts.map { factApiToEntityMapper.invoke(it) }
-        entities.forEach { factDao.insertCatFact(it) }
+    override suspend fun loadNewCatFacts(count: Int) {
+        catFactsService.getRandomFacts(count).facts
+            .map { factApiToEntityMapper.invoke(it) }
+            .forEach { factDao.insertCatFact(it) }
+    }
 
-        return factDao.getAllCatFacts().map { entities ->
-            entities.map { factEntityToDomainMapper.invoke(it) }
-        }
+    override suspend fun clearAllCatFact() {
+        factDao.clearAllCatFacts()
     }
 }
 

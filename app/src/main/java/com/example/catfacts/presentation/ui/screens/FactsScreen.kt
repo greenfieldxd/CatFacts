@@ -17,12 +17,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.catfacts.R
 import com.example.catfacts.presentation.main.MainViewModel
 import com.example.catfacts.presentation.state.ProgressState
-import com.example.catfacts.presentation.state.ProgressState.Loading
 import com.example.catfacts.presentation.ui.components.FactCard
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -32,13 +32,13 @@ fun FactsScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 
     val facts by viewModel.facts.collectAsState()
     val progressState by viewModel.progressState.collectAsState()
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = progressState is ProgressState.Refreshing)
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
 
     SwipeRefresh(state = swipeRefreshState,
-        onRefresh = { viewModel.refreshFacts() }
+        onRefresh = { viewModel.clearCards() }
     ) {
         when (progressState) {
-            is Loading -> {
+            is ProgressState.Loading, is ProgressState.IsEmpty -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -62,17 +62,23 @@ fun FactsScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(stringResource(R.string.load_error_text))
+                    val message = (progressState as ProgressState.Error).message
+                    Text(text = "${stringResource(R.string.load_error_text)} $message.",
+                        textAlign = TextAlign.Center,
+                        fontSize = 18.sp,
+                        modifier = Modifier
+                            .padding(20.dp)
+                    )
                     Button(
                         modifier = Modifier.padding(top = 10.dp),
-                        onClick = { viewModel.refreshFacts() }
+                        onClick = { viewModel.loadNewFacts() }
                     ) {
                         Text(stringResource(R.string.try_again_text), fontSize = 20.sp)
                     }
                 }
             }
 
-            is ProgressState.Success, is ProgressState.Refreshing -> {
+            is ProgressState.Success -> {
                 LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
                     items(items = facts) { fact ->
                         FactCard(
@@ -82,7 +88,6 @@ fun FactsScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                         )
                     }
                 }
-
             }
         }
     }
