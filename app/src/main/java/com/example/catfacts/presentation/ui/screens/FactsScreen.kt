@@ -32,27 +32,25 @@ fun FactsScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 
     val facts by viewModel.facts.collectAsState()
     val progressState by viewModel.progressState.collectAsState()
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = progressState == ProgressState.Loading)
 
     SwipeRefresh(state = swipeRefreshState,
-        onRefresh = { viewModel.clearCards() }
+        onRefresh = { viewModel.loadNewFacts() }
     ) {
         when (progressState) {
-            is ProgressState.Loading, is ProgressState.IsEmpty -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 4.dp,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
 
-            }
+                //Box(
+                //    modifier = Modifier
+                //        .fillMaxSize()
+                //        .padding(16.dp),
+                //    contentAlignment = Alignment.Center
+                //) {
+                //    CircularProgressIndicator(
+                //        color = MaterialTheme.colorScheme.onPrimary,
+                //        strokeWidth = 4.dp,
+                //        modifier = Modifier.align(Alignment.Center)
+                //    )
+                //}
 
             is ProgressState.Error -> {
                 Column (
@@ -78,7 +76,7 @@ fun FactsScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                 }
             }
 
-            is ProgressState.Success -> {
+            is ProgressState.Success, ProgressState.Loading -> {
                 LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
                     items(items = facts) { fact ->
                         FactCard(

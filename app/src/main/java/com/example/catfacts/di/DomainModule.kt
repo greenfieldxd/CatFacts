@@ -2,8 +2,6 @@ package com.example.catfacts.di
 
 import com.example.catfacts.data.repository.FactRepository
 import com.example.catfacts.data.repository.ImageRepository
-import com.example.catfacts.domain.usecases.ClearCardsUseCase
-import com.example.catfacts.domain.usecases.ClearCardsUseCaseImpl
 import com.example.catfacts.domain.usecases.GetCardsUseCase
 import com.example.catfacts.domain.usecases.GetCardsUseCaseImpl
 import com.example.catfacts.domain.usecases.LoadCatFactsUseCase
@@ -51,14 +49,5 @@ object DomainModule {
         imageRepository: ImageRepository
     ) : LoadNewCardsUseCase {
         return LoadNewCardsUseCaseImpl(factRepository, imageRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideClearCardsUseCase(
-        factRepository: FactRepository,
-        imageRepository: ImageRepository
-    ) : ClearCardsUseCase {
-        return ClearCardsUseCaseImpl(factRepository, imageRepository)
     }
 }

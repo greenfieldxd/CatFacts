@@ -5,15 +5,12 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catfacts.domain.usecases.ClearCardsUseCase
 import com.example.catfacts.domain.usecases.GetCardsUseCase
 import com.example.catfacts.domain.usecases.LoadNewCardsUseCase
 import com.example.catfacts.presentation.model.CatCard
 import com.example.catfacts.presentation.state.ProgressState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,8 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getCardsUseCase: GetCardsUseCase,
-    private val clearCardsUseCase: ClearCardsUseCase,
+    getCardsUseCase: GetCardsUseCase,
     private val loadNewCardsUseCase: LoadNewCardsUseCase
 ) : ViewModel() {
 
@@ -39,7 +35,7 @@ class MainViewModel @Inject constructor(
         .map { it.toMutableStateList() }
         .onEach {
             if (it.isEmpty()) {
-                _progressState.value = ProgressState.IsEmpty
+                loadNewFacts()
             } else {
                 _progressState.value = ProgressState.Success
             }
@@ -47,20 +43,9 @@ class MainViewModel @Inject constructor(
         .flowOn(Dispatchers.IO)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.Lazily,
             initialValue = mutableStateListOf(),
         )
-
-    init {
-        viewModelScope.launch{
-            _progressState.collect { state ->
-                if (state is ProgressState.IsEmpty) {
-                    delay(200)
-                    loadNewFacts()
-                }
-            }
-        }
-    }
 
     fun loadNewFacts() {
         viewModelScope.launch {
@@ -70,12 +55,6 @@ class MainViewModel @Inject constructor(
             } catch (e: Exception) {
                 _progressState.value = ProgressState.Error(e.message)
             }
-        }
-    }
-
-    fun clearCards(){
-        viewModelScope.launch {
-            clearCardsUseCase.invoke()
         }
     }
 }
